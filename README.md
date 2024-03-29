@@ -1,0 +1,1 @@
+This repository holds the R codes for reproducing the meta-analyses in my paper "Psychedelics as an intervention for psychological, existential distress in terminally ill patients: a systematic review and network meta-analysis".
