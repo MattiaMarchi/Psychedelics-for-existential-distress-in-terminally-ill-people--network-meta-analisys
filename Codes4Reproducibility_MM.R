@@ -16,9 +16,9 @@ library(netmeta)
 #Import data
 dep <- structure(list(ID = c("Fan et al, 2017", "Gasser et al, 2014", "Griffiths et al, 2016", "Grob et al, 2011", "Holze et al, 2023", 
                              "Liu et al, 2020", "Ross et al, 2016", "Wolfson et al, 2020", "Xu et al, 2017"),
-                      mean1_depre = c(25.09, 7.5, 7, 10, 20, 8.21, 6.5, 9, 13.45), sd1_depre = c(7.07, 3.3, 1.39, 2.7, 17.2, 3.13, 1.88, 9, 5.21),
-                      ncont1_depre = c(20L, 8L, 25L, 12L, 42L, 203L, 14L, 13L, 25L), mean2_depre = c(32.03, 8.7, 12.92, 16.1, 24, 11, 14.24, 12.2, 17.36),
-                      sd2_depre = c(7.21, 2.9, 1.58, 3.6, 12, 3.8, 1.84, 5.3, 6.25), ncont2_depre = c(17L, 3L, 25L, 12L, 42L, 100L, 15L, 5L, 25L),
+                      mean1_depre = c(25.09, 7.5, 6.64, 10, 12.4, 8.21, 6.5, 9, 13.45), sd1_depre = c(7.07, 3.3, 5.2, 9.35, 12.2, 3.13, 7.03, 9, 5.21),
+                      ncont1_depre = c(20L, 8L, 25L, 12L, 42L, 203L, 14L, 13L, 25L), mean2_depre = c(32.03, 8.7, 14.8, 16.1, 19, 11, 14.24, 12.2, 17.36),
+                      sd2_depre = c(7.21, 2.9, 7.25, 12.47, 8, 3.8, 7.13, 5.3, 6.25), ncont2_depre = c(17L, 3L, 25L, 12L, 42L, 100L, 15L, 5L, 25L),
                       t1 = c("Ketamine", "LSD", "Psilocybin", "Psilocybin", "LSD", "Ketamine", "Psilocybin", "MDMA", "Ketamine"), t2 = c("Midazolam", "PBO", "PBO", "PBO", "PBO", "PBO", "PBO", "PBO", "PBO"),
                       contrast = c("Ketamine - Midazolam", "LSD - PBO", "Psilocybin - PBO", "Psilocybin - PBO", "LSD - PBO", "Ketamine - PBO", "Psilocybin - PBO", "MDMA - PBO", "Ketamine - PBO"),
                       Study.design = c("RCT", "RCT", "Crossover RCT", "Crossover RCT", "Crossover RCT", "RCT", "Crossover RCT", "RCT", "RCT"),
@@ -27,16 +27,16 @@ dep <- structure(list(ID = c("Fan et al, 2017", "Gasser et al, 2014", "Griffiths
                                     "Life-threatening cancer", "Life-threatening illness (most cancer)", "Breast cancer"),
                       Setting = c("Inpatient clinic", "Psychotherapy", "Calm room", "Calm room", "Psychotherapy", "Intra-operative administration", "Psychotherapy", "Psychotherapy", "Intra-operative administration"),
                       Follow.up = c("1 and 3 days", "8 weeks", "5 and 26 weeks", "2 weeks", "2, 8, and 16 weeks", "3 days; 1, 4, and 12 weeks", "6 and 26 weeks", "4 weeks", "1 week"),
-                      X..Females = c(25L, 36L, 49L, 92L, 48L, 100L, 62L, 78L, 100L), Mean.age = c(45.8, 51.7, 56.3, 47, 45, 47.4, 56.3, 54.9, 42.8), Std.mean.baseline.depression = c(3.63, 2.32, 23.78, 4.47, 2, 7.35, 4.98, 2.6, 6.25),
+                      X..Females = c(25L, 36L, 49L, 92L, 48L, 100L, 62L, 78L, 100L), Mean.age = c(45.8, 51.7, 56.3, 47, 45, 47.4, 56.3, 54.9, 42.8), Std.mean.baseline.depression = c(3.63, 2.32, 4.88, 1.29, 2, 7.35, 1.91, 2.6, 6.25),
                       Comparator = c("Active", "Active", "Active", "Placebo", "Placebo", "Placebo", "Placebo", "Placebo", "Placebo")), row.names = c(NA, -9L), class = "data.frame")
 #Random-effects meta-analysis of depression level
 d <- metacont(n.e = ncont1_depre, mean.e = mean1_depre, sd.e = sd1_depre,
               n.c = ncont2_depre, mean.c = mean2_depre, sd.c = sd2_depre,
               data = dep, studlab = ID, sm = "SMD", method.tau = "DL")
 d
-forest.meta(d, layout = "RevMan5", digits.sd = 2, random = T, fixed = F,
-            label.e = "Psychedelics", label.c = "Controls",
-            label.left = "Favours psychedelics", label.right = "Favours controls", allstudies = F)
+forest(d, layout = "RevMan5", digits.sd = 2, random = T, fixed = F,
+       label.e = "Psychedelics", label.c = "Controls",
+       label.left = "Favours psychedelics", label.right = "Favours controls", allstudies = F)
 #Publication Bias
 #Funnel Plot
 funnel(d, xlab = "Hedges' g")
@@ -82,22 +82,22 @@ mreg_d_country
 #Import data
 anx <- structure(list(ID = c("Gasser et al, 2014", "Griffiths et al, 2016", "Holze et al, 2023", "Ross et al, 2016", "Wolfson et al, 2020"),
                       Timepoints = c("2 months", "5 weeks (reported) and 6 months", "2, 8, 16 weeks", "6 weeks", "1 month"),
-                      mean1_anx = c(41.5, 34.64, 92.1, 33.5, 38.9), sd1_anx = c(3.2, 1.84, 38.2, 2.83, 10.6), ncont1_anx = c(8L, 25L, 42L, 14L, 13L),
-                      mean2_anx = c(51.7, 40.48, 111, 47.05, 48.6), sd2_anx = c(5.3, 2.11, 20, 2.8, 12.6), ncont2_anx = c(3L, 25L, 42L, 15L, 5L),
+                      mean1_anx = c(41.5, 34.64, 89.3, 33.5, 38.9), sd1_anx = c(3.2, 9.2, 37.7, 10.59, 10.6), ncont1_anx = c(8L, 25L, 42L, 14L, 13L),
+                      mean2_anx = c(51.7, 40.48, 111, 47.05, 48.6), sd2_anx = c(5.3, 10.55, 20, 10.84, 12.6), ncont2_anx = c(3L, 25L, 42L, 15L, 5L),
                       t1 = c("LSD", "Psilocybin", "LSD", "Psilocybin", "MDMA"), t2 = c("PBO", "PBO", "PBO", "PBO", "PBO"),
                       contrast = c("LSD - LSD placebo", "Psilocybin - Psilocibyn placebo", "LSD - Placebo", "Psilocybin - PBO", "MDMA - Placebo"),
                       Study.design = c("RCT", "Crossover RCT", "Crossover RCT", "Crossover RCT", "RCT"), Country = c("Switzerland", "USA", "Switzerland", "USA", "USA"),
                       Diagnosis = c("Life-threatening illness (most cancer)", "Life-threatening cancer", "Life-threatening illness (most cancer)", "Life-threatening cancer", "Life-threatening illness (most cancer)"),
                       Setting = c("Psychotherapy", "Calm room", "Psychotherapy", "Psychotherapy", "Psychotherapy"), X..Females = c(36L, 49L, 48L, 62L, 78L),
-                      Mean.age = c(51.7, 56.3, 45, 56.3, 54.9), Std.mean.baseline.anxiety = c(8.9, 25.71, 5.55, 13.48, 5.27), Comparator = c("Active", "Active", "Placebo", "Placebo", "Placebo")), row.names = c(NA, -5L), class = "data.frame")
+                      Mean.age = c(51.7, 56.3, 45, 56.3, 54.9), Std.mean.baseline.anxiety = c(8.9, 5.39, 5.55, 4, 5.27), Comparator = c("Active", "Active", "Placebo", "Placebo", "Placebo")), row.names = c(NA, -5L), class = "data.frame")
 #Random-effects meta-analysis of anxiety level
 a <- metacont(n.e = ncont1_anx, mean.e = mean1_anx, sd.e = sd1_anx,
               n.c = ncont2_anx, mean.c = mean2_anx, sd.c = sd2_anx,
               data = anx, studlab = ID, sm = "SMD", method.tau = "DL")
 a
-forest.meta(a, layout = "RevMan5", digits.sd = 2, random = T, fixed = F,
-            label.e = "Psychedelics", label.c = "Controls",
-            label.left = "Favours psychedelics", label.right = "Favours controls", allstudies = F)
+forest(a, layout = "RevMan5", digits.sd = 2, random = T, fixed = F,
+       label.e = "Psychedelics", label.c = "Controls",
+       label.left = "Favours psychedelics", label.right = "Favours controls", allstudies = F)
 #Publication Bias
 #Funnel Plot
 funnel(a, xlab = "Hedges' g")
@@ -145,18 +145,6 @@ mreg_a_country
 ###----------------------------------------------------------------------------------------
 
 ###----------------------------------1. Depression-----------------------------------------
-#Import data
-dep <- structure(list(ID = c("Fan et al, 2017", "Gasser et al, 2014", "Griffiths et al, 2016", "Grob et al, 2011", "Holze et al, 2023", "Liu et al, 2020", "Ross et al, 2016", "Wolfson et al, 2020", "Xu et al, 2017"),
-                      mean1_depre = c(25.09, 7.5, 7, 10, 20, 8.21, 6.5, 9, 13.45), sd1_depre = c(7.07, 3.3, 1.39, 2.7, 17.2, 3.13, 1.88, 9, 5.21), ncont1_depre = c(20L, 8L, 25L, 12L, 42L, 203L, 14L, 13L, 25L),
-                      mean2_depre = c(32.03, 8.7, 12.92, 16.1, 24, 11, 14.24, 12.2, 17.36), sd2_depre = c(7.21, 2.9, 1.58, 3.6, 12, 3.8, 1.84, 5.3, 6.25), ncont2_depre = c(17L, 3L, 25L, 12L, 42L, 100L, 15L, 5L, 25L),
-                      t1 = c("Ketamine", "LSD", "Psilocybin", "Psilocybin", "LSD", "Ketamine", "Psilocybin", "MDMA", "Ketamine"), t2 = c("Midazolam", "PBO", "PBO", "PBO", "PBO", "PBO", "PBO", "PBO", "PBO"),
-                      contrast = c("Ketamine - Midazolam", "LSD - PBO", "Psilocybin - PBO", "Psilocybin - PBO", "LSD - PBO", "Ketamine - PBO", "Psilocybin - PBO", "MDMA - PBO", "Ketamine - PBO"),
-                      Study.design = c("RCT", "RCT", "Crossover RCT", "Crossover RCT", "Crossover RCT", "RCT", "Crossover RCT", "RCT", "RCT"), Country = c("China", "Switzerland", "USA", "USA", "Switzerland", "China", "USA", "USA", "China"), 
-                      Diagnosis = c("Cancer", "Life-threatening illness (most cancer)", "Life-threatening cancer", "Life-threatening cancer (advanced stage)", "Life-threatening illness (most cancer)", "Breast cancer", "Life-threatening cancer", "Life-threatening illness (most cancer)", "Breast cancer"),
-                      Setting = c("Inpatient clinic", "Psychotherapy", "Calm room", "Calm room", "Psychotherapy", "Intra-operative administration", "Psychotherapy", "Psychotherapy", "Intra-operative administration"),
-                      Follow.up = c("1 and 3 days", "8 weeks", "5 and 26 weeks", "2 weeks", "2, 8, and 16 weeks", "3 days; 1, 4, and 12 weeks", "6 and 26 weeks", "4 weeks", "1 week"),
-                      X..Females = c(25L, 36L, 49L, 92L, 48L, 100L, 62L, 78L, 100L), Mean.age = c("45.8", "51.7", "56.3", "47", "45", "47.4", "56.3", "54.9", "42.8"), Std.mean.baseline.depression = c("3.63", "2.32", "23.78", "4.47", "2", "7.35", "4.98", "2.6", "6.25"),
-                      Comparator = c("Active", "Active", "Active", "Placebo", "Placebo", "Placebo", "Placebo", "Placebo", "Placebo")), row.names = c(NA, -9L), class = "data.frame")
 #Organize data/calculate pairwise comparisons
 pw1 <- pairwise(treat = list(t1, t2), n = list(ncont1_depre, ncont2_depre),
                 mean = list(mean1_depre, mean2_depre), sd = list(sd1_depre, sd2_depre),
@@ -187,16 +175,6 @@ decomp.design(net1)
 netsplit(net1)
 
 ###------------------------------------2. Anxiety--------------------------------------------
-#Import data
-anx <- structure(list(ID = c("Gasser et al, 2014", "Griffiths et al, 2016", "Holze et al, 2023", "Ross et al, 2016", "Wolfson et al, 2020"),
-                      Timepoints = c("2 months", "5 weeks (reported) and 6 months", "2, 8, 16 weeks", "6 weeks", "1 month"),
-                      mean1_anx = c(41.5, 34.64, 92.1, 33.5, 38.9), sd1_anx = c(3.2, 1.84, 38.2, 2.83, 10.6), ncont1_anx = c(8L, 25L, 42L, 14L, 13L),
-                      mean2_anx = c(51.7, 40.48, 111, 47.05, 48.6), sd2_anx = c(5.3, 2.11, 20, 2.8, 12.6), ncont2_anx = c(3L, 25L, 42L, 15L, 5L),
-                      t1 = c("LSD", "Psilocybin", "LSD", "Psilocybin", "MDMA"), t2 = c("PBO", "PBO", "PBO", "PBO", "PBO"), contrast = c("LSD - LSD placebo", "Psilocybin - Psilocibyn placebo", "LSD - Placebo", "Psilocybin - PBO", "MDMA - Placebo"),
-                      Study.design = c("RCT", "Crossover RCT", "Crossover RCT", "Crossover RCT", "RCT"), Country = c("Switzerland", "USA", "Switzerland", "USA", "USA"),
-                      Diagnosis = c("Life-threatening illness (most cancer)", "Life-threatening cancer", "Life-threatening illness (most cancer)", "Life-threatening cancer", "Life-threatening illness (most cancer)"),
-                      Setting = c("Psychotherapy", "Calm room", "Psychotherapy", "Psychotherapy", "Psychotherapy"), X..Females = c(36L, 49L, 48L, 62L, 78L), Mean.age = c("51.7", "56.3", "45", "56.3", "54.9"),
-                      Std.mean.baseline.anxiety = c("8.9", "25.71", "5.55", "13.48", "5.27"), Comparator = c("Active", "Active", "Placebo", "Placebo", "Placebo")), row.names = c(NA, -5L), class = "data.frame")
 #Organize data/calculate pairwise comparisons
 pw2 <- pairwise(treat = list(t1, t2), n = list(ncont1_anx, ncont2_anx),
                 mean = list(mean1_anx, mean2_anx), sd = list(sd1_anx, sd2_anx),
@@ -229,8 +207,8 @@ netsplit(net2)
 ###------------------------------------3. Death Acceptance----------------------------------------
 #Import data
 da <- structure(list(ID = c("Griffiths et al, 2016", "Ross et al, 2016", "Wolfson et al, 2020"),
-                     mean1_deathacc = c(36.17, 13.64, 3.5), sd1_deathacc = c(1.59, 5.96, 1.6), ncont1_deathacc = c(25L, 14L, 13L),
-                     mean2_deathacc = c(29.14, 11.27, 3), sd2_deathacc = c(2.25, 5.67, 0.7), ncont2_deathacc = c(25L, 15L, 5L),
+                     mean1_deathacc = c(36.17, 13.64, 3.5), sd1_deathacc = c(7.95, 22.30, 1.6), ncont1_deathacc = c(25L, 14L, 13L),
+                     mean2_deathacc = c(29.14, 11.27, 3), sd2_deathacc = c(11.25, 21.96, 0.7), ncont2_deathacc = c(25L, 15L, 5L),
                      t1 = c("Psilocybin", "Psilocybin", "MDMA"), t2 = c("PBO", "PBO", "PBO"), contrast = c("Psilocybin-PBO", "Psilocybin-PBO", "MDMA-PBO"),
                      note = c("death acceptance", "death transcendence (also death anxiety available)", "death acceptance (also fear of death available)")), row.names = c(NA, -3L), class = "data.frame")
 #Organize data/calculate pairwise comparisons
@@ -265,8 +243,8 @@ netsplit(net6)
 ###--------------------------------4. Quality of life------------------------------------
 #Import data
 qol <- structure(list(ID = c("Gasser et al, 2014", "Griffiths et al, 2016", "Ross et al, 2016", "Wolfson et al, 2020"),
-                      mean1_QoL = c(50, 7.14, 15.43, 15), sd1_QoL = c(14.9, 0.29, 0.66, 3.9), ncont1_QoL = c(8L, 25L, 14L, 13L),
-                      mean2_QoL = c(36, 6.17, 12.28, 16.3), sd2_QoL = c(12.8, 0.32, 0.66, 6.7), ncont2_QoL = c(3L, 25L, 15L, 5L),
+                      mean1_QoL = c(50, 7.14, 15.43, 15), sd1_QoL = c(14.9, 1.45, 2.47, 3.9), ncont1_QoL = c(8L, 25L, 14L, 13L),
+                      mean2_QoL = c(36, 6.17, 12.28, 16.3), sd2_QoL = c(12.8, 1.6, 2.56, 6.7), ncont2_QoL = c(3L, 25L, 15L, 5L),
                       t1 = c("LSD", "Psilocybin", "Psilocybin", "MDMA"), t2 = c("PBO", "PBO", "PBO", "PBO"),
                       contrast = c("LSD-PBO", "Psilocybin-PBO", "Psilocybin-PBO", "MDMA-PBO")), row.names = c(NA, -4L), class = "data.frame")
 #Organize data/calculate pairwise comparisons
